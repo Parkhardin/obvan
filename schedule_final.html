@@ -5,25 +5,111 @@
   <meta charset="UTF-8">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <style>
-    table {
+   <style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+    margin: 0;
+    padding: 0;
+  }
+
+  h1 {
+    text-align: center;
+    color: #333;
+    padding: 20px;
+    margin: 0;
+  }
+
+  #search-form {
+    display: flex;
+    justify-content: center;
+    margin: 30px 0;
+  }
+
+  #search-input {
+    width: 300px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+  }
+
+  #search-input:focus {
+    border-color: #666;
+  }
+
+  #search-form button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    outline: none;
+  }
+
+  #search-form button:hover {
+    background-color: #45a049;
+  }
+
+  #search-results {
+    text-align: center;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 30px;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  th, td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+  }
+
+  th {
+    background-color: #4CAF50;
+    color: #fff;
+  }
+
+  tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+
+  tr:hover {
+    background-color: #ddd;
+  }
+
+  td {
+    word-break: break-word;
+  }
+
+  @media screen and (max-width: 600px) {
+    #search-input {
       width: 100%;
-      border-collapse: collapse;
     }
-    th, td {
-      border: 1px solid #ddd;
-      padding: 8px;
-      text-align: left;
+
+    #search-form button {
+      width: 100%;
     }
-    th {
-      background-color: #f2f2f2;
-    }
-  </style>
+  }
+</style>
+
 </head>
 <body>
-  <form id="search-form">
-    <input type="text" id="search-input" placeholder="검색어 입력">
-    <button type="submit">검색</button>
-  </form>
+  <div style="text-align: center;">
+    <form id="search-form">
+      <input type="text" id="search-input" placeholder="검색어 입력" style="width: 300px;">
+      <button type="submit">검색</button>
+    </form>
+  </div>
+
   <div id="search-results"></div>
 
   <script>
