@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>JSON 파일 검색 예시</title>
+  <meta charset="UTF-8">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+  </style>
+</head>
+<body>
+  <form id="search-form">
+    <input type="text" id="search-input" placeholder="검색어 입력">
+    <button type="submit">검색</button>
+  </form>
+  <div id="search-results"></div>
+
+  <script>
+    $(document).ready(function() {
+      // 검색 폼 제출 이벤트 핸들러
+      $('#search-form').submit(function(e) {
+        e.preventDefault();
+
+        var keyword = $('#search-input').val();
+
+        // JSON 파일 로드
+        $.getJSON('output.json', function(data) {
+          // 검색 결과 처리 로직
+          var results = data.filter(function(item) {
+            // 검색 조건에 맞는지 확인
+            return (
+              item.Name.includes(keyword) &&
+              item.Program !== null &&
+              item.Time !== "" &&
+              item.Media !== "" &&
+              item.Location !== ""
+            );
+          });
+
+          // 검색 결과를 화면에 표시
+          var resultsContainer = $('#search-results');
+          resultsContainer.empty();
+
+          if (results.length > 0) {
+            var table = $('<table>');
+            var tableHeader = $('<tr>');
+            tableHeader.append($('<th>').text('Date'));
+            tableHeader.append($('<th>').text('Resource'));
+            tableHeader.append($('<th>').text('Program'));
+            tableHeader.append($('<th>').text('Time'));
+            tableHeader.append($('<th>').text('Media'));
+            tableHeader.append($('<th>').text('Location'));
+            tableHeader.append($('<th>').text('Name'));
+            table.append(tableHeader);
+
+            for (var i = 0; i < results.length; i++) {
+              var tableRow = $('<tr>');
+              tableRow.append($('<td>').text(String(results[i].Date))); // 날짜를 텍스트로 표현
+              tableRow.append($('<td>').text(String(results[i].Resource)));
+              tableRow.append($('<td>').text(String(results[i].Program)));
+              tableRow.append($('<td>').text(String(results[i].Time))); // 시간을 텍스트로 표현
+              tableRow.append($('<td>').text(String(results[i].Media)));
+              tableRow.append($('<td>').text(String(results[i].Location)));
+              tableRow.append($('<td>').text(String(results[i].Name)));
+
+              table.append(tableRow);
+            }
+
+            resultsContainer.append(table);
+          } else {
+            resultsContainer.text('검색 결과 없음');
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>
