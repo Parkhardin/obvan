@@ -5,104 +5,109 @@
   <meta charset="UTF-8">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <style>
-   <style>
-  body {
-    font-family: Arial, sans-serif;
-    background-color: #f2f2f2;
-    margin: 0;
-    padding: 0;
-  }
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      margin: 0;
+      padding: 0;
+    }
 
-  h1 {
-    text-align: center;
-    color: #333;
-    padding: 20px;
-    margin: 0;
-  }
+    h1 {
+      text-align: center;
+      color: #333;
+      padding: 20px;
+      margin: 0;
+    }
 
-  #search-form {
-    display: flex;
-    justify-content: center;
-    margin: 30px 0;
-  }
+    #search-form {
+      display: flex;
+      justify-content: center;
+      margin: 30px 0;
+    }
 
-  #search-input {
-    width: 300px;
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    outline: none;
-  }
-
-  #search-input:focus {
-    border-color: #666;
-  }
-
-  #search-form button {
-    padding: 10px 20px;
-    font-size: 16px;
-    background-color: #4CAF50;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    outline: none;
-  }
-
-  #search-form button:hover {
-    background-color: #45a049;
-  }
-
-  #search-results {
-    text-align: center;
-  }
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 30px;
-    border-radius: 5px;
-    overflow: hidden;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-
-  th, td {
-    border: 1px solid #ddd;
-    padding: 12px;
-    text-align: left;
-  }
-
-  th {
-    background-color: #4CAF50;
-    color: #fff;
-  }
-
-  tr:nth-child(even) {
-    background-color: #f2f2f2;
-  }
-
-  tr:hover {
-    background-color: #ddd;
-  }
-
-  td {
-    word-break: break-word;
-  }
-
-  @media screen and (max-width: 600px) {
     #search-input {
-      width: 100%;
+      width: 300px;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      outline: none;
+    }
+
+    #search-input:focus {
+      border-color: #666;
     }
 
     #search-form button {
-      width: 100%;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #4CAF50;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      outline: none;
     }
-  }
-</style>
 
+    #search-form button:hover {
+      background-color: #45a049;
+    }
+
+    #search-results {
+      text-align: center;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 30px;
+      border-radius: 5px;
+      overflow: hidden;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 12px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #4CAF50;
+      color: #fff;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    tr:hover {
+      background-color: #ddd;
+    }
+
+    td {
+      word-break: break-word;
+    }
+
+    @media screen and (max-width: 600px) {
+      #search-input {
+        width: 100%;
+      }
+
+      #search-form button {
+        width: 100%;
+      }
+    }
+  </style>
 </head>
 <body>
+  <h1>중계기술국 7,8월 스케쥴</h1>
+
+  <div style="text-align: center;">
+    <span id="current-date"></span><br>
+    <span id="author"></span>
+  </div>
+
   <div style="text-align: center;">
     <form id="search-form">
       <input type="text" id="search-input" placeholder="검색어 입력" style="width: 300px;">
@@ -113,7 +118,12 @@
   <div id="search-results"></div>
 
   <script>
+    // 현재 날짜와 작성자 정보 표시
+    var currentDate = new Date().toLocaleDateString();
+
     $(document).ready(function() {
+      $('#current-date').text("업데이트: " + currentDate);
+
       // 검색 폼 제출 이벤트 핸들러
       $('#search-form').submit(function(e) {
         e.preventDefault();
@@ -121,52 +131,57 @@
         var keyword = $('#search-input').val();
 
         // JSON 파일 로드
-        $.getJSON('output.json', function(data) {
-          // 검색 결과 처리 로직
-          var results = data.filter(function(item) {
-            // 검색 조건에 맞는지 확인
-            return (
-              item.Name.includes(keyword) &&
-              item.Program !== null &&
-              item.Time !== "" &&
-              item.Media !== "" &&
-              item.Location !== ""
-            );
-          });
+        $.getJSON('output.json', function(data1) {
+          $.getJSON('output2.json', function(data2) {
+            // 두 개의 JSON 파일을 합침
+            var combinedData = data1.concat(data2);
 
-          // 검색 결과를 화면에 표시
-          var resultsContainer = $('#search-results');
-          resultsContainer.empty();
+            // 검색 결과 처리 로직
+            var results = combinedData.filter(function(item) {
+              // 검색 조건에 맞는지 확인
+              return (
+                item.Name.includes(keyword) &&
+                item.Program !== null &&
+                item.Time !== "" &&
+                item.Media !== "" &&
+                item.Location !== ""
+              );
+            });
 
-          if (results.length > 0) {
-            var table = $('<table>');
-            var tableHeader = $('<tr>');
-            tableHeader.append($('<th>').text('Date'));
-            tableHeader.append($('<th>').text('Resource'));
-            tableHeader.append($('<th>').text('Program'));
-            tableHeader.append($('<th>').text('Time'));
-            tableHeader.append($('<th>').text('Media'));
-            tableHeader.append($('<th>').text('Location'));
-            tableHeader.append($('<th>').text('Name'));
-            table.append(tableHeader);
+            // 검색 결과를 화면에 표시
+            var resultsContainer = $('#search-results');
+            resultsContainer.empty();
 
-            for (var i = 0; i < results.length; i++) {
-              var tableRow = $('<tr>');
-              tableRow.append($('<td>').text(String(results[i].Date))); // 날짜를 텍스트로 표현
-              tableRow.append($('<td>').text(String(results[i].Resource)));
-              tableRow.append($('<td>').text(String(results[i].Program)));
-              tableRow.append($('<td>').text(String(results[i].Time))); // 시간을 텍스트로 표현
-              tableRow.append($('<td>').text(String(results[i].Media)));
-              tableRow.append($('<td>').text(String(results[i].Location)));
-              tableRow.append($('<td>').text(String(results[i].Name)));
+            if (results.length > 0) {
+              var table = $('<table>');
+              var tableHeader = $('<tr>');
+              tableHeader.append($('<th>').text('Date'));
+              tableHeader.append($('<th>').text('Resource'));
+              tableHeader.append($('<th>').text('Program'));
+              tableHeader.append($('<th>').text('Time'));
+              tableHeader.append($('<th>').text('Media'));
+              tableHeader.append($('<th>').text('Location'));
+              tableHeader.append($('<th>').text('Name'));
+              table.append(tableHeader);
 
-              table.append(tableRow);
+              for (var i = 0; i < results.length; i++) {
+                var tableRow = $('<tr>');
+                tableRow.append($('<td>').text(String(results[i].Date))); // 날짜를 텍스트로 표현
+                tableRow.append($('<td>').text(String(results[i].Resource)));
+                tableRow.append($('<td>').text(String(results[i].Program)));
+                tableRow.append($('<td>').text(String(results[i].Time))); // 시간을 텍스트로 표현
+                tableRow.append($('<td>').text(String(results[i].Media)));
+                tableRow.append($('<td>').text(String(results[i].Location)));
+                tableRow.append($('<td>').text(String(results[i].Name)));
+
+                table.append(tableRow);
+              }
+
+              resultsContainer.append(table);
+            } else {
+              resultsContainer.text('스케쥴이 없어 데이터가 검색되지 않습니다');
             }
-
-            resultsContainer.append(table);
-          } else {
-            resultsContainer.text('검색 결과 없음');
-          }
+          });
         });
       });
     });
